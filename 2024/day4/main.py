@@ -17,7 +17,6 @@ def dfs(i, j, direction = None):
     ):
         return
     if len(curr) == 4:
-        print(curr)
         res[0] += 1
         return
     if direction:
@@ -33,6 +32,15 @@ def dfs(i, j, direction = None):
             dfs(i+dx, j+dy, (dx, dy))
             curr.pop()
 
+def isXMAS(i, j):
+    if wordsGrid[i - 1][j - 1] == "M" and wordsGrid[i + 1][j + 1] == "S":
+        if (wordsGrid[i - 1][j + 1] == "M" and wordsGrid[i + 1][j - 1] == "S") or (wordsGrid[i - 1][j + 1] == "S" and wordsGrid[i + 1][j - 1] == "M"):
+            return True
+    if wordsGrid[i - 1][j - 1] == "S" and wordsGrid[i + 1][j + 1] == "M":
+        if (wordsGrid[i - 1][j + 1] == "M" and wordsGrid[i + 1][j - 1] == "S") or (wordsGrid[i - 1][j + 1] == "S" and wordsGrid[i + 1][j - 1] == "M"):
+            return True
+    return False
+
 
 
 if __name__ == "__main__":
@@ -47,3 +55,10 @@ if __name__ == "__main__":
                 curr = ["X"]
                 dfs(i, j)
     print("FIRST PART: ", res[0])
+    
+    res = [0]
+    for i in range(1, len(wordsGrid) - 1):
+        for j in range(1, len(wordsGrid[0]) - 1):
+            if wordsGrid[i][j] == "A" and isXMAS(i, j):
+                res[0] += 1
+    print("SECOND PART: ", res[0])
