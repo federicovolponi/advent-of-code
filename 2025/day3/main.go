@@ -7,6 +7,7 @@ import (
 	"os"
 	"slices"
 	"strconv"
+	"aoc/shared"	
 )
 
 func extractBank(bank string) []int {
@@ -48,23 +49,23 @@ func sliceToNumber(digits []int) (int, error) {
 }
 
 func findMaxBatteriesStack(bank []int) int {
-	stack := make([]int, 0)
+	stack := ds.NewStack()
 	length := len(bank)
 	
 	for i, battery := range bank {
-		if (len(stack) == 0 || stack[len(stack) - 1] >= battery) && len(stack) < 12 {
-			stack = append(stack, battery)
+		if (stack.Len() == 0 || stack.Tail() >= battery) && stack.Len() < 12 {
+			stack.Push(battery)
 		} else {
-			for len(stack) > 0 && battery > stack[len(stack) - 1] && length - i > 12 - len(stack) {
-				stack = stack[:len(stack) - 1]
+			for stack.Len() > 0 && battery > stack.Tail() && length - i > 12 - stack.Len() {
+				stack.Pop()
 			}
 
-			if len(stack) < 12 {
-				stack = append(stack, battery)
+			if stack.Len() < 12 {
+				stack.Push(battery)
 			}
 		}
 	}
-	res, _ := sliceToNumber(stack)
+	res, _ := sliceToNumber(stack.S())
 	return res
 }
 
